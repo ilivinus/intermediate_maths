@@ -1,0 +1,101 @@
+<html>
+    <head>
+        <title>Lines from a point</title>
+    </head>
+    <body>
+        <div style="position: relative;">
+            <canvas id="myCanvas" width="1400px" height="8  00px" style="position: absolute; left: 0; top : 0; z-index: 4;"></canvas>
+        </div>
+        <script src="./form.js"></script>
+        <script>
+var grid_size = 25;
+var x_axis_distance_grid_lines = 10;
+var y_axis_distance_grid_lines = 20;
+//var x_axis_starting_point = { number: 1, suffix: '\u03a0' };
+//var y_axis_starting_point = { number: 1, suffix: '' };
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+ctx.clearRect(0,0,canvas.width,canvas.height);
+var canvas_width = canvas.width;
+var canvas_height = canvas.height;
+
+// var num_lines_x = Math.floor(canvas_height/grid_size);
+// var num_lines_y = Math.floor(canvas_width/grid_size);
+// function clearAndTranslate(){
+
+// }
+// // Draw grid lines along X-axis
+// for(var i=0; i<=num_lines_x; i++) {
+//     ctx.beginPath();
+//     ctx.lineWidth = 1;
+    
+//     // If line represents X-axis draw in different color
+//     if(i == x_axis_distance_grid_lines) 
+//         ctx.strokeStyle = "#FF0000";
+//     else
+//         ctx.strokeStyle = "#e9e9e9";
+    
+//     if(i == num_lines_x) {
+//         ctx.moveTo(0, grid_size*i);
+//         ctx.lineTo(canvas_width, grid_size*i);
+//     }
+//     else {
+//         ctx.moveTo(0, grid_size*i+0.5);
+//         ctx.lineTo(canvas_width, grid_size*i+0.5);
+//     }
+//     ctx.stroke();
+// }
+
+// // Draw grid lines along Y-axis
+// for(i=0; i<=num_lines_y; i++) {
+//     ctx.beginPath();
+//     ctx.lineWidth = 1;
+    
+//     // If line represents X-axis draw in different color
+//     if(i == y_axis_distance_grid_lines) 
+//         ctx.strokeStyle = "#000000";
+//     else
+//         ctx.strokeStyle = "#e9e9e9";
+    
+//     if(i == num_lines_y) {
+//         ctx.moveTo(grid_size*i, 0);
+//         ctx.lineTo(grid_size*i, canvas_height);
+//     }
+//     else {
+//         ctx.moveTo(grid_size*i+0.5, 0);
+//         ctx.lineTo(grid_size*i+0.5, canvas_height);
+//     }
+//     ctx.stroke();
+// }
+
+
+ctx.translate(y_axis_distance_grid_lines*grid_size, x_axis_distance_grid_lines*grid_size);
+
+var from = new Form();  
+let g = 1;
+ctx.font = "14px Arial";
+setInterval(()=>{
+
+
+let cco = from.Circle(25* g/10,6,g++);
+
+for(let ind = 0; ind < cco.length; ind++){
+    //ctx.fillText(g++,cco[ind].x, cco[ind].y);    
+    if(ind !== cco.length - 1){
+        (new Line(cco[ind+1].x,cco[ind+1].y,cco[ind].x,cco[ind].y)).JoiningPoints(200).forEach(qq => ctx.fillRect(qq.x,qq.y,1,1))
+    }else{
+        (new Line(cco[ind].x,cco[ind].y,cco[0].x,cco[0].y)).JoiningPoints(200).forEach(qq => ctx.fillRect(qq.x,qq.y,1,1));        
+    }
+}
+for(let ind = 0; ind < cco.length; ind++){   
+    if(ind !== cco.length - 1){
+        (new Line(cco[ind].x,cco[ind].y,cco[ind+1].x,cco[ind+1].y)).JoiningPoints(200).forEach(qq => ctx.fillRect(qq.x,qq.y,1,1))    
+    }else{
+       (new Line(cco[ind].x,cco[ind].y,cco[0].x,cco[0].y)).JoiningPoints(200).forEach(qq => ctx.fillRect(qq.x,qq.y,1,1)); 
+    }
+}
+},1000);
+</script>
+</body>
+</html>

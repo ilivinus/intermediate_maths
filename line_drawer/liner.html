@@ -1,0 +1,176 @@
+<html>
+    <head>
+        <title>Lines from a point</title>
+    </head>
+    <body>
+        <div>
+            <input id="x1" placeholder="x1" type="text">
+            <input id="y1" placeholder="y1" type="text">
+            <input id="x2" placeholder="x2" type="text">
+            <input id="y2" placeholder="y2"  type="text">
+            <input id="density" placeholder="density" type="text">
+            <input type="submit" value="Draw Line" onclick="livinus()"/>
+        </div>
+        <div>
+            <canvas id="myCanvas" width="1000px" height="500px">Canvas not supported</canvas>
+        </div>
+        <script src="./engine.js"></script>
+        <script>
+                
+            function livinus(){
+                var grid_size = 25;
+                var x_axis_distance_grid_lines = 5;
+                var y_axis_distance_grid_lines = 5;
+                var x_axis_starting_point = { number: 1, suffix: '\u03a0' };
+                var y_axis_starting_point = { number: 1, suffix: '' };
+
+                var canvas = document.getElementById("myCanvas");
+
+                var ctx = canvas.getContext("2d");
+                
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+                ctx.restore();  
+                var canvas_width = canvas.width;
+                var canvas_height = canvas.height;
+/*
+                var num_lines_x = Math.floor(canvas_height/grid_size);
+                var num_lines_y = Math.floor(canvas_width/grid_size);
+
+                // Draw grid lines along X-axis
+                for(var i=0; i<=num_lines_x; i++) {
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+                    
+                    // If line represents X-axis draw in different color
+                    if(i == x_axis_distance_grid_lines) 
+                        ctx.strokeStyle = "#000000";
+                    else
+                        ctx.strokeStyle = "#e9e9e9";
+                    
+                    if(i == num_lines_x) {
+                        ctx.moveTo(0, grid_size*i);
+                        ctx.lineTo(canvas_width, grid_size*i);
+                    }
+                    else {
+                        ctx.moveTo(0, grid_size*i+0.5);
+                        ctx.lineTo(canvas_width, grid_size*i+0.5);
+                    }
+                    ctx.stroke();
+                }
+
+                // Draw grid lines along Y-axis
+                for(i=0; i<=num_lines_y; i++) {
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+                    
+                    // If line represents X-axis draw in different color
+                    if(i == y_axis_distance_grid_lines) 
+                        ctx.strokeStyle = "#000000";
+                    else
+                        ctx.strokeStyle = "#e9e9e9";
+                    
+                    if(i == num_lines_y) {
+                        ctx.moveTo(grid_size*i, 0);
+                        ctx.lineTo(grid_size*i, canvas_height);
+                    }
+                    else {
+                        ctx.moveTo(grid_size*i+0.5, 0);
+                        ctx.lineTo(grid_size*i+0.5, canvas_height);
+                    }
+                    ctx.stroke();
+                }
+
+                // Translate to the new origin. Now Y-axis of the canvas is opposite to the Y-axis of the graph. So the y-coordinate of each element will be negative of the actual
+               ctx.translate(y_axis_distance_grid_lines*grid_size, x_axis_distance_grid_lines*grid_size);
+               
+  */         
+                /*
+                // Ticks marks along the positive X-axis
+                for(i=1; i<(num_lines_y - y_axis_distance_grid_lines); i++) {
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = "#000000";
+
+                    // Draw a tick mark 6px long (-3 to 3)
+                    ctx.moveTo(grid_size*i+0.5, -3);
+                    ctx.lineTo(grid_size*i+0.5, 3);
+                    ctx.stroke();
+
+                    // Text value at that point
+                    ctx.font = '9px Arial';
+                    ctx.textAlign = 'start';
+                    ctx.fillText(x_axis_starting_point.number*i + x_axis_starting_point.suffix, grid_size*i-2, 15);
+                }
+
+                // Ticks marks along the negative X-axis
+                for(i=1; i<y_axis_distance_grid_lines; i++) {
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = "#000000";
+
+                    // Draw a tick mark 6px long (-3 to 3)
+                    ctx.moveTo(-grid_size*i+0.5, -3);
+                    ctx.lineTo(-grid_size*i+0.5, 3);
+                    ctx.stroke();
+
+                    // Text value at that point
+                    ctx.font = '9px Arial';
+                    ctx.textAlign = 'end';
+                    ctx.fillText(-x_axis_starting_point.number*i + x_axis_starting_point.suffix, -grid_size*i+3, 15);
+                }
+
+                // Ticks marks along the positive Y-axis
+                // Positive Y-axis of graph is negative Y-axis of the canvas
+                for(i=1; i<(num_lines_x - x_axis_distance_grid_lines); i++) {
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = "#000000";
+
+                    // Draw a tick mark 6px long (-3 to 3)
+                    ctx.moveTo(-3, grid_size*i+0.5);
+                    ctx.lineTo(3, grid_size*i+0.5);
+                    ctx.stroke();
+
+                    // Text value at that point
+                    ctx.font = '9px Arial';
+                    ctx.textAlign = 'start';
+                    ctx.fillText(-y_axis_starting_point.number*i + y_axis_starting_point.suffix, 8, grid_size*i+3);
+                }
+
+                // Ticks marks along the negative Y-axis
+                // Negative Y-axis of graph is positive Y-axis of the canvas
+                for(i=1; i<x_axis_distance_grid_lines; i++) {
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = "#000000";
+
+                    // Draw a tick mark 6px long (-3 to 3)
+                    ctx.moveTo(-3, -grid_size*i+0.5);
+                    ctx.lineTo(3, -grid_size*i+0.5);
+                    ctx.stroke();
+
+                    // Text value at that point
+                    ctx.font = '9px Arial';
+                    ctx.textAlign = 'start';
+                    ctx.fillText(y_axis_starting_point.number*i + y_axis_starting_point.suffix, 8, -grid_size*i+3);
+                }
+*/
+
+                //document.getElementById("myCanvas").
+                
+                var x1 = document.getElementById("x1").value,
+                x2 = document.getElementById("x2").value,
+                y1 = document.getElementById("y1").value,
+                y2 = document.getElementById("y2").value,
+                density = document.getElementById("density").value;                
+                //var ctx = canvas.getContext("2d");
+                
+                var line = new Line(parseFloat(x1),parseFloat(y1),parseFloat(x2),parseFloat(y2));                
+                line.JoiningPoints(parseInt(density));
+                console.log(line.points);
+                line.points.forEach(o => ctx.fillRect(parseFloat(o.x),parseFloat(o.y),2,2));
+            }
+       </script>
+    </body>
+</html>
